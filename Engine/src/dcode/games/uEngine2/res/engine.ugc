@@ -1,0 +1,59 @@
+#This file contains engine configuration, generated
+from game's initial settings.
+
+Please don't touch if you don't know what are you doing.
+
+These settings are aviable in StartupSetupUtility
+========================================================================================================================
+
+
+
+:uEngine2{
+
+==:base{
+
+====># Enables debug mode, prepare for output spam
+    B:Enable Debug Mode=false
+====}
+
+
+==:display{
+
+====># Sets the internal resolution for game rendering
+    I:Base width=520
+    I:Base height=300
+
+====># Sets the default scaling applied to canvas after rendering
+    I:Pixel size=2
+
+====># Display modes: nope (window), box, stretch, scaled_box, colored_box, colored_scaled_box
+    S:Screen mode=stretch
+====}
+
+
+==:speed{
+    I:FPS=30
+    I:Sound thread TPS=0
+    I:Logic thread TPS=60
+    I:Background thread TPS=30
+====}
+
+
+==:render{
+    I:PostProcCount=0
+    I:sprite table size=16
+    I:sprite layer size=16
+    B:sprite wrappers=true
+    B:sprite Z-sort=false
+====}
+
+
+==:audio{
+
+====># rly?
+    B:Audio Enabled=false
+====}
+
+==}
+
+

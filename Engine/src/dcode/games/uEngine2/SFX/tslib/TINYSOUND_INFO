@@ -1,0 +1,4 @@
+Underlying part of uEngine2 sound system is a derrivative of
+TinySound library by Finn Kuusisto
+author:		https://github.com/finnkuusisto
+library:	https://github.com/finnkuusisto/TinySound

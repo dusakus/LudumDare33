@@ -1,0 +1,47 @@
+uGame Config file construction:
+
+
+value types:
+I - integer
+S - String
+F - float
+B - boolean
+
+========================================================================================================================
+# <- commented line, won't be saved
+
+
+
+># master group can also have some entries
+B:wpis-1=true
+
+
+:GROUP1{
+==]#
+   # this area
+   # will be stored as a group description
+   # please DON'T use '¬'
+   # as it's used as new line separation marker
+==]#
+
+  I:wpis1=64
+  I:wpis2=64
+  I:wpis3=64
+
+==># this line is a description for entry below, and will be saved.
+  S:string1=wat?
+
+==># all types of data can be stored with a single name
+  S:wpis1=oh...
+  F:wpis1=16.3264128
+
+==># and they all have separate descriptions, yay
+  B:wpis1=true
+
+==:GROUP2{
+====]#
+     # Groups can be nested, it's a tree
+====]#
+
+====}
+==}
