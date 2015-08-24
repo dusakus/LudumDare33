@@ -50,6 +50,7 @@ public class uGameSetup {
 
     // Sound system settings               					//All disabled by default
     public boolean soundEnabled = false;
+    public double soundvolume = 0.5;
     public int wavChannelCount = 0;                            //how many WAV playback channels are needed
     public int scriptChannelCount = 0;                        //how many SoundScript playback channels are needed
     public int effectChannelCount = 0;                      //how many effect (short WAV) playback channels are needed
@@ -98,7 +99,9 @@ public class uGameSetup {
 
         //audio setup
         soundEnabled = StData.engineConfig.getBool("uEngine2.audio.Audio Enabled", soundEnabled);
-        StData.engineConfig.getLeaf("uEngine2.audio.Audio Enabled", false).setBComment("rly?");
+        StData.engineConfig.getLeaf("uEngine2.audio.Audio Enabled", false).setBComment("disabling it may cause instability, use volume setting instead");
+	    soundvolume = StData.engineConfig.getFloat("uEngine2.audio.Global Volume", (float) soundvolume);
+	    StData.engineConfig.getLeaf("uEngine2.audio.Global Volume", false).setFComment("range from 0.0 (disabled) to 1.0 (100%), higher values might sound weird, lower values might suck the sound in");
 
 
         StData.engineConfig.save();
@@ -106,6 +109,6 @@ public class uGameSetup {
 
     }
     public enum FullMODE {
-        nope, box, stretch, scaled_box, colored_box, setup_util, colored_scaled_box;
+        nope, box, stretch, scaled_box, colored_box, setup_util, colored_scaled_box
     }
 }

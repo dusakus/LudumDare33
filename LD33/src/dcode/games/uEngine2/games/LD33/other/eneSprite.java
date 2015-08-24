@@ -28,16 +28,16 @@ public class eneSprite extends Sprite {
 
     @Override
     public int getX() {
-        return (int)LStData.enemyPosition - LStData.getLocation();
+        return (int)LStData.enemyPosition - LStData.getLocation()-28;
     }
 
     @Override
     public int getY() {
         if (!lanewsap) {
-            y = 60 + 20 * LStData.enemyLane;
+            y = 60 + 20 * LStData.enemyLane - 40;
         } else {
             y += lanewsap_mod;
-            if(y == 60 + 20 * LStData.enemyLane) lanewsap = false;
+            if(y == 60 + 20 * LStData.enemyLane - 40) lanewsap = false;
         }
         return y;
     }

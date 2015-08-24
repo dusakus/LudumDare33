@@ -5,10 +5,13 @@ import dcode.games.uEngine2.BGTasks.PBGTask;
 import dcode.games.uEngine2.GFX.ScreenContent;
 import dcode.games.uEngine2.GFX.layers.FillTextureLayer;
 import dcode.games.uEngine2.StData;
-import dcode.games.uEngine2.games.LD33.AI_Runner;
 import dcode.games.uEngine2.games.LD33.LStData;
-import dcode.games.uEngine2.games.LD33.layers.*;
-import dcode.games.uEngine2.games.LD33.other.*;
+import dcode.games.uEngine2.games.LD33.layers.AnimationPlayer1;
+import dcode.games.uEngine2.games.LD33.layers.HUDLayer3;
+import dcode.games.uEngine2.games.LD33.layers.ScrollLayer_MENU;
+import dcode.games.uEngine2.games.LD33.other.ItemQueueA;
+import dcode.games.uEngine2.games.LD33.other.playSprite;
+import dcode.games.uEngine2.games.LD33.other.playerShadow;
 import dcode.games.uEngine2.games.LD33.terrainOB.TerrainObject;
 import dcode.games.uEngine2.games.LD33.terrainOB.events.CollisionEvent;
 import dcode.games.uEngine2.games.LD33.terrainOB.events.speedDownEvent;
@@ -17,6 +20,7 @@ import dcode.games.uEngine2.tools.Shortcuts;
 import dcode.games.uEngine2.tools.numbarTools;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
@@ -25,7 +29,7 @@ import static dcode.games.uEngine2.tools.Shortcuts.*;
 /**
  * Created by dusakus on 22.08.15.
  */
-public class MWIG1 implements IMW {
+public class MWMENU implements IMW {
 	private int tilecount = 1;
 
 	public static final int DEATHLIMIT = 300;
@@ -42,10 +46,7 @@ public class MWIG1 implements IMW {
 		switch (status) {
 			case 10:
 				clearGame();
-				requestTexture("scroll/count3.png", "pre1");
-				requestTexture("scroll/count2.png", "pre2");
-				requestTexture("scroll/count1.png", "pre3");
-				requestTexture("header1.png", "top1");
+				requestTexture("header3.png", "top1");
 				status = 20;
 				break;
 			case 20:
@@ -74,92 +75,64 @@ public class MWIG1 implements IMW {
 				}
 				break;
 			case 32:
-				StData.currentGC.currentSC.layers_Overlay.add(new HUDLayer());
+				StData.currentGC.currentSC.layers_Overlay.add(new HUDLayer3());
 				status = 99;
 				break;
 			case 99:
 				StData.currentGC.currentSC.layers_Background.add(new FillTextureLayer("scbg0"));
-				StData.currentGC.currentSC.layers_Background.add(new ScrollLayer());
-				StData.currentGC.currentSC.layers_Foreground.add(new ObjectsLayer());
-				StData.currentGC.currentSC.layers_Overlay.add(new WarnLayer());
+				StData.currentGC.currentSC.layers_Background.add(new ScrollLayer_MENU());
 				StData.currentGC.currentSC.sprites[4] = new playSprite("char1");
-				StData.currentGC.currentSC.sprites[5] = new eneSprite("charf");
 				StData.currentGC.currentSC.sprites[9] = new playerShadow();
-				StData.currentGC.currentSC.sprites[8] = new enemyShadow();
 				StData.currentGC.currentSC.sprites_back[0] = 9;
-				StData.currentGC.currentSC.sprites_back[1] = 8;
 				StData.currentGC.currentSC.sprites_front[0] = 4;
-				StData.currentGC.currentSC.sprites_front[1] = 5;
 				log("Started game mode 1");
-				StData.currentGC.currentLT.registerBasic(new AI_Runner(5));
-				status = 101;
+				LStData.playerONSCREENshift = -20;
+				status = 100;
+				break;
+			case 100:
+				LStData.playerPosition += 5;
+				LStData.playerONSCREENshift += 2;
+				if (LStData.playerONSCREENshift >= 30) status = 101;
 				break;
 			case 101:
 				if (LStData.blocks.size() < 3) {
 					LStData.blocks.add("til" + (StData.gRand.nextInt(tilecount - 1) + 1));
 				}
-				if (LStData.terrainObjects.size() <= 20 && StData.gRand.nextInt(25) == 2) {
-					queueObstacle();
-				}
-				if (StData.gRand.nextInt(200) == 1) {
-					queueBonus();
-				}
-				if (StData.gRand.nextInt(200) == 1) {
-					queueBonus2();
-				}
-				clearObstacles();
-				if(LStData.playerSpeed <= 0.2){
-					LStData.playerPosition +=0.2;
-				} else
-				LStData.playerPosition += LStData.playerSpeed;
-				if(LStData.enemySpeed <= 0.3){
-					LStData.enemyPosition +=0.3;
-				} else
-				LStData.enemyPosition += LStData.enemySpeed;
-				percUpdate();
-				checkCollision();
 
-				if(LStData.enemyPosition < LStData.playerPosition){
-					LStData.playerONSCREENshift = numbarTools.clamp((int) ((LStData.playerPosition - LStData.enemyPosition)) , 40 , 150);
-				} else {
-					LStData.playerONSCREENshift = 40;
+				LStData.playerPosition += 5;
+
+				if (StData.threadManager.KW.isKeyHeld(KeyEvent.VK_SPACE)) {
+					status++;
 				}
-
-				if(LStData.battleIndex <= -100 && lastperc >= 100 && LStData.playerLane == LStData.enemyLane){
-					status = 201;
-				}
-
-				if(LStData.battleIndex >=100) status = 301;
-
+				break;
+			case 102:
+				LStData.playerONSCREENshift += 5;
+				if (LStData.playerONSCREENshift > 340)
+					switch (LStData.playerLane) {
+						case 1:
+							status = 201;
+							break;
+						case 5:
+							LStData.currentMode = LStData.MODE_EXIT;
+							break;
+						default:
+							LStData.playerONSCREENshift = -20;
+							status = 100;
+					}
 				break;
 			case 201:
-				log("player won");
-				a = new AnimationPlayer1("endin1");
+				a = new AnimationPlayer1("start1");
 				StData.currentGC.currentSC.layers_Overlay.add(a);
 				status++;
 				break;
 			case 202:
-				if(a.DONE) status++;
+				if (a.DONE) status++;
 				break;
 			case 203:
 				clearGame();
 				status = 0;
-				LStData.currentMode = LStData.MODE_RUN;
-			case 301:
-				log("player lost");
-				a = new AnimationPlayer1("fail1");
-				StData.currentGC.currentSC.layers_Overlay.add(a);
-				status++;
-				break;
-			case 302:
-				if(a.DONE) status++;
-				break;
-			case 303:
-				clearGame();
-				status = 0;
-				LStData.currentMode = LStData.MODE_RUN;
+				LStData.currentMode = LStData.MODE_INGAME_1;
 		}
-		if (status < 10) status = 10;
 		return status;
 	}
 
@@ -173,15 +146,17 @@ public class MWIG1 implements IMW {
 		LStData.playerSpeed = 3.1;
 		LStData.enemySpeed = 3.1;
 		LStData.blocks = new LinkedList<String>();
+		ScreenContent sc = StData.currentGC.currentSC;
 		StData.currentGC.currentSC = new ScreenContent();
+		StData.currentGC.currentSC.layers_Overlay = sc.layers_Overlay;
 	}
 
 	private void checkCollision() {
 		for (TerrainObject to : LStData.terrainObjects) {
-			if (to.Ylocation == LStData.playerLane + -1 && to.Xlocation + to.collisionoffset <= LStData.playerPosition && to.Xlocation + to.collisionoffset + to.collisionLenght + numbarTools.clamp((int) (LStData.playerSpeed-8), 1, 150) >= LStData.playerPosition) {
+			if (to.Ylocation == LStData.playerLane + -1 && to.Xlocation + to.collisionoffset <= LStData.playerPosition && to.Xlocation + to.collisionoffset + to.collisionLenght + numbarTools.clamp((int) (LStData.playerSpeed - 8), 1, 150) >= LStData.playerPosition) {
 				to.onCollision.onCollision(true, to);
 			}
-			if (to.Ylocation == LStData.enemyLane - 1 && to.Xlocation + to.collisionoffset <= LStData.enemyPosition && to.Xlocation + to.collisionoffset + to.collisionLenght + numbarTools.clamp((int) (LStData.playerSpeed-8), 1, 150) >= LStData.enemyPosition) {
+			if (to.Ylocation == LStData.enemyLane - 1 && to.Xlocation + to.collisionoffset <= LStData.enemyPosition && to.Xlocation + to.collisionoffset + to.collisionLenght + numbarTools.clamp((int) (LStData.playerSpeed - 8), 1, 150) >= LStData.enemyPosition) {
 				to.onCollision.onCollision(false, to);
 			}
 		}
@@ -253,6 +228,7 @@ public class MWIG1 implements IMW {
 
 		LStData.terrainObjects.add(a);
 	}
+
 	private void queueBonus() {
 		log("creating an bonus");
 
@@ -295,14 +271,14 @@ public class MWIG1 implements IMW {
 				lastperc = percp;
 			}
 		}
-		if(percp >= 50){
-			if(batdel.doNow()){
-				LStData.battleIndex-= (percp-50)/10 + 1;
+		if (percp >= 50) {
+			if (batdel.doNow()) {
+				LStData.battleIndex -= (percp - 50) / 10 + 1;
 				batdel.newDelay(30);
 			}
 		}
-		if(percp <= 0){
-			if(batdel.doNow()){
+		if (percp <= 0) {
+			if (batdel.doNow()) {
 				LStData.battleIndex++;
 				batdel.newDelay(30);
 			}

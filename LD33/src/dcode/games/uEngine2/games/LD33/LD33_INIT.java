@@ -13,10 +13,10 @@ public class LD33_INIT {
 		gs.TPS_MSX = 60;
 		gs.TPS_BG = 30;
 
-		gs.debug = true;
+		gs.debug = false;
 		gs.width = 320;
 		gs.height = 200;
-		gs.scale = 1;
+		gs.scale = 4;
 		gs.frezeOnFocusLost = true;
 		gs.soundEnabled = true;
 		gs.fullscreen = uGameSetup.FullMODE.nope;

@@ -6,6 +6,7 @@
 package dcode.games.uEngine2.SFX;
 
 import dcode.games.uEngine.sound.parts.Note;
+import dcode.games.uEngine2.SFX.tslib.TinySound;
 import dcode.games.uEngine2.StData;
 
 /**
@@ -75,6 +76,8 @@ public class AudioThread extends Thread {
 
 		StData.currentGC.currentAC.msxCH1.muted = false;
 		StData.currentGC.currentAC.msxCH1.setRepeat(false);
+
+		TinySound.setGlobalVolume(StData.setup.soundvolume);
 
 		this.setName("Audio Thread ITER"+threadIteration);
 		//Timming variables

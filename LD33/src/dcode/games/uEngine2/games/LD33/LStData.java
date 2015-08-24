@@ -5,7 +5,6 @@ import dcode.games.uEngine2.games.LD33.other.ItemQueueA;
 import dcode.games.uEngine2.games.LD33.other.playSprite;
 import dcode.games.uEngine2.games.LD33.terrainOB.TerrainObject;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -17,17 +16,19 @@ public class LStData {
     public static final int MODE_INIT = 0;
     public static final int MODE_LOADBASE = 1;
     public static final int MODE_RUN = 5;
+    public static final int MODE_MENU = 18;
     public static final int MODE_INGAME_1 = 21;
     public static final int MODE_INGAME_2 = 22;
+	public static final int MODE_EXIT = -10;
 
-    public static int currentMode = 0;
+	public static int currentMode = 0;
     public static int currentStatus = 0;
     public static int ERRORCODE = 0;
     public static IIp currentInputProcessor = new IIp() {
         @Override
         public void upPressed() {
 
-            if (LStData.currentMode == LStData.MODE_INGAME_1) {
+            if (LStData.currentMode >=10) {
                 ((playSprite) StData.currentGC.currentSC.sprites[4]).goUP();
             }
         }
@@ -35,7 +36,7 @@ public class LStData {
         @Override
         public void downPressed() {
 
-            if (LStData.currentMode == LStData.MODE_INGAME_1) {
+            if (LStData.currentMode >=10) {
                 ((playSprite) StData.currentGC.currentSC.sprites[4]).goDOWN();
             }
         }
@@ -52,19 +53,18 @@ public class LStData {
 
         @Override
         public void confirmPressed() {
-
         }
     };
 
     public static int playerONSCREENshift = 160;
-    public static int enemyONSCREENshift = 160;
+    public static int enemyONSCREENshift = 160; // for what? nobody knows ]:I
 
     public static double playerPosition = 160;
-    public static double playerSpeed = 5.1f;
+    public static double playerSpeed = 3.1f;
 
     public static int playerLane = 3;
     public static double enemyPosition = 40;
-    public static double enemySpeed = 5.1f;
+    public static double enemySpeed = 3.1f;
 
     public static int enemyLane = 3;
 
@@ -76,11 +76,13 @@ public class LStData {
 
     //You chase mode:
     public static ItemQueueA chase_itemQ;
-    public static ArrayList<TerrainObject> terrainObjects = new ArrayList<TerrainObject>();
+    public static LinkedList<TerrainObject> terrainObjects = new LinkedList<TerrainObject>();
     public static int laneFirstY = 90;
     public static int laneWidth = 20;
+	public static long gIDENT = System.nanoTime();
+	public static int battleIndex = 60;
 
-    public static int getLocation() {
+	public static int getLocation() {
         return (int) playerPosition - playerONSCREENshift;
     }
 }

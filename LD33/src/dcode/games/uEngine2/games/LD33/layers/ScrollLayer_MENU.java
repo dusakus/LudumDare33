@@ -10,9 +10,9 @@ import java.awt.*;
 /**
  * Created by dusakus on 22.08.15.
  */
-public class ScrollLayer implements ILayer {
+public class ScrollLayer_MENU implements ILayer {
 
-	private String hiding = "pre1", center = "pre2", imcomming = "pre3";
+	private String hiding = "til1", center = "til1", imcomming = "til1";
 
 
 	@Override
@@ -39,7 +39,7 @@ public class ScrollLayer implements ILayer {
 	}
 
 	private int calculateCurrentOffset() {
-		return -1 * ((LStData.getLocation()) - LStData.tileCounter * 200);
+		return -1 * (((int)LStData.playerPosition - 160) - LStData.tileCounter * 200);
 	}
 
 	@Override

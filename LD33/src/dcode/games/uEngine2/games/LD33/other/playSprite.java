@@ -4,6 +4,7 @@ import dcode.games.uEngine.dcctools.Delay;
 import dcode.games.uEngine2.GFX.sprites.Sprite;
 import dcode.games.uEngine2.games.LD33.LStData;
 import dcode.games.uEngine2.tools.Shortcuts;
+import dcode.games.uEngine2.tools.numbarTools;
 
 import java.awt.*;
 
@@ -47,6 +48,7 @@ public class playSprite extends Sprite {
         if (framecounter.doNow()) {
             animationFrame++;
             if (animationFrame >= FRAME_MAX) animationFrame = 0;
+	        framecounter.newDelay(numbarTools.clamp((int) (15 - LStData.playerSpeed), 3, 15));
         }
         return animationKey + animationMode + animationFrame;
     }
