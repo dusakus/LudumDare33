@@ -20,11 +20,11 @@ public class ScrollLayer implements ILayer {
 
 		int currentOffset = calculateCurrentOffset();
 
-		G2D.drawImage(Shortcuts.getTexture(hiding), currentOffset, 40, null);
-		G2D.drawImage(Shortcuts.getTexture(center), currentOffset + 200, 40, null);
-		G2D.drawImage(Shortcuts.getTexture(imcomming), currentOffset + 400, 40, null);
+		G2D.drawImage(Shortcuts.getTexture(hiding), currentOffset-100, 40, null);
+		G2D.drawImage(Shortcuts.getTexture(center), currentOffset + 100, 40, null);
+		G2D.drawImage(Shortcuts.getTexture(imcomming), currentOffset + 300, 40, null);
 
-		if (currentOffset <= -199) {
+		if (currentOffset <= -100) {
 			hiding = center;
 			center = imcomming;
 			if (LStData.blocks.isEmpty()) {
@@ -39,7 +39,7 @@ public class ScrollLayer implements ILayer {
 	}
 
 	private int calculateCurrentOffset() {
-		return -1 * ((LStData.getLocation()) - LStData.tileCounter * 200);
+		return -1 * ((LStData.getLocation()) - (LStData.tileCounter * 200));
 	}
 
 	@Override

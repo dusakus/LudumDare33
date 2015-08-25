@@ -92,6 +92,8 @@ public class AI_Runner implements ILogicTask {
 		int lanestay = worldData[4] - worldData[5] + 2;
 		int lanedown = worldData[6] - worldData[7] + 2;
 
+		if(LStData.playerLane == LStData.enemyLane) lanestay-=2;
+
 		if(lanedown > lanestay){
 			if(laneup > lanedown){
 				nextOperation = 31;

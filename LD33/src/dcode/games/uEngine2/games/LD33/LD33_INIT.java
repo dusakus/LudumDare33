@@ -16,14 +16,14 @@ public class LD33_INIT {
 		gs.debug = false;
 		gs.width = 320;
 		gs.height = 200;
-		gs.scale = 4;
-		gs.frezeOnFocusLost = true;
+		gs.scale = 3;
+		gs.frezeOnFocusLost = false;
 		gs.soundEnabled = true;
 		gs.fullscreen = uGameSetup.FullMODE.nope;
 
 		gs.safeName = "LD33";
-		gs.screenName = "UNTITLED";
-		gs.windowTitle = "\u2284-code UNTITLED";
+		gs.screenName = "TITLED";
+		gs.windowTitle = "[LD33] Speedy GOO-zales and the meal of infinity";
 
 		PuGameBase gb = new PuGameBase();
 

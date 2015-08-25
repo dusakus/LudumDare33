@@ -1,6 +1,5 @@
 package dcode.games.uEngine2.games.LD33.layers;
 
-import dcode.games.uEngine2.BGTasks.internalTasks.LoadSpriteSheet;
 import dcode.games.uEngine2.GFX.ILayer;
 import dcode.games.uEngine2.games.LD33.LStData;
 import dcode.games.uEngine2.games.LD33.terrainOB.TerrainObject;
@@ -16,7 +15,8 @@ public class ObjectsLayer implements ILayer {
     @Override
     public void draw(Graphics2D G2D) {
         int offset = LStData.getLocation();
-        for (TerrainObject t : LStData.terrainObjects) {
+	    TerrainObject[] tos = LStData.terrainObjects.toArray(new TerrainObject[1]);
+        for (TerrainObject t : tos) {
             if(t.Xlocation < offset + 321 && t.Xlocation > offset - 128){
                 G2D.drawImage(Shortcuts.getTexture(t.WorldTexture), t.Xlocation + t.XOffset - offset, (t.Ylocation * LStData.laneWidth) + LStData.laneFirstY + t.YOffset, null);
             }

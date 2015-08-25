@@ -5,7 +5,6 @@
  */
 package dcode.games.uEngine2.SFX;
 
-import dcode.games.uEngine.sound.parts.Note;
 import dcode.games.uEngine2.SFX.tslib.TinySound;
 import dcode.games.uEngine2.StData;
 
@@ -34,49 +33,6 @@ public class AudioThread extends Thread {
 	@Override
 	public void run() {
 		threadIteration++;
-
-		//test
-		StData.currentGC.currentAC.msxCH1.newLoop();
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(-1, 4, 30));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(2, 4, 9));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(-1, 4, 2));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(2, 4, 9));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(3, 4, 9));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(4, 4, 15));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(2, 4, 9));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(5, 4, 30));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(-1, 4, 60));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(-1, 4, 60));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(-1, 4, 60));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(2, 4, 2));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(2, 5, 2));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(2, 4, 2));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(2, 5, 2));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(2, 4, 2));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(2, 5, 2));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(2, 4, 2));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(2, 5, 2));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(2, 4, 2));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(2, 5, 2));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(2, 4, 2));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(2, 5, 2));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(2, 4, 2));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(2, 5, 2));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(2, 4, 2));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(2, 5, 2));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(2, 4, 2));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(2, 5, 2));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(-1, 4, 35));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(3, 6, 3));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(3, 5, 3));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(3, 4, 3));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(3, 3, 3));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(3, 2, 3));
-		StData.currentGC.currentAC.msxCH1.addNote(new Note(3, 1, 3));
-
-		StData.currentGC.currentAC.msxCH1.muted = false;
-		StData.currentGC.currentAC.msxCH1.setRepeat(false);
-
 		TinySound.setGlobalVolume(StData.setup.soundvolume);
 
 		this.setName("Audio Thread ITER"+threadIteration);

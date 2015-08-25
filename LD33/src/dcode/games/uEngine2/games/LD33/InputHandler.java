@@ -1,7 +1,8 @@
 package dcode.games.uEngine2.games.LD33;
 
 import dcode.games.uEngine2.StData;
-import dcode.games.uEngine2.games.LD33.other.playSprite;
+
+import java.awt.event.KeyEvent;
 
 public class InputHandler extends dcode.games.uEngine2.PInputHandler {
 
@@ -13,7 +14,12 @@ public class InputHandler extends dcode.games.uEngine2.PInputHandler {
 
 	@Override
 	public void keyPressed(int ID) {
-
+		if(StData.threadManager.KW.isIsCONTROLLHeld() && StData.threadManager.KW.isIsSHIFTHeld() && ID == KeyEvent.VK_F){
+			LStData.playerSpeed += 1;
+		}
+		if(StData.threadManager.KW.isIsCONTROLLHeld() && StData.threadManager.KW.isIsSHIFTHeld() && ID == KeyEvent.VK_R && LStData.playerSpeed > 1.5){
+			LStData.playerSpeed -= 1;
+		}
 	}
 
 	@Override

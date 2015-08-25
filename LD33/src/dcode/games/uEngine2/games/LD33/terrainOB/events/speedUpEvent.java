@@ -14,6 +14,7 @@ public class speedUpEvent extends CollisionEvent{
 		if(player){
 			StData.currentGC.currentSC.layers_Overlay.add(new notificationLayer_speedUP());
 			LStData.playerSpeed += 0.5f;
+			LStData.sfx_faster.play();
 		} else {
 			LStData.enemySpeed += 0.5f;
 		}

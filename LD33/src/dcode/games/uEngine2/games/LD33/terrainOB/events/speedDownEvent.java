@@ -14,6 +14,7 @@ public class speedDownEvent extends CollisionEvent{
 		if(player){
 			StData.currentGC.currentSC.layers_Overlay.add(new notificationLayer_speedDOWN());
 			LStData.playerSpeed -= 0.5f;
+			LStData.sfx_slower.play();
 		} else {
 			LStData.enemySpeed -= 0.5f;
 		}

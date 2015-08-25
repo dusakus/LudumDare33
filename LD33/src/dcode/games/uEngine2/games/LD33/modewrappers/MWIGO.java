@@ -25,7 +25,7 @@ import static dcode.games.uEngine2.tools.Shortcuts.*;
 /**
  * Created by dusakus on 22.08.15.
  */
-public class MWIG1 implements IMW {
+public class MWIGO implements IMW {
 	private int tilecount = 1;
 
 	public static final int DEATHLIMIT = 300;
@@ -101,13 +101,13 @@ public class MWIG1 implements IMW {
 				if (LStData.blocks.size() < 3) {
 					LStData.blocks.add("til" + (StData.gRand.nextInt(tilecount - 1) + 1));
 				}
-				if (LStData.terrainObjects.size() <= 20 && StData.gRand.nextInt(25) == 2) {
+				if (LStData.terrainObjects.size() <= 150 && StData.gRand.nextInt(250) == 2) {
 					queueObstacle();
 				}
-				if (StData.gRand.nextInt(200) == 1) {
+				if (StData.gRand.nextInt(3) == 1) {
 					queueBonus();
 				}
-				if (StData.gRand.nextInt(200) == 1) {
+				if (StData.gRand.nextInt(3) == 1) {
 					queueBonus2();
 				}
 				clearObstacles();
@@ -152,7 +152,6 @@ public class MWIG1 implements IMW {
 				clearGame();
 				status = 0;
 				LStData.currentMode = LStData.MODE_RUN;
-				break;
 			case 301:
 				LStData.msx_game.stop();
 				log("player lost");

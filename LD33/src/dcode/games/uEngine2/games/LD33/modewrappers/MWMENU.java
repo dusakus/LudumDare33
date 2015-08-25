@@ -1,7 +1,5 @@
 package dcode.games.uEngine2.games.LD33.modewrappers;
 
-import dcode.games.uEngine.dcctools.Delay;
-import dcode.games.uEngine2.BGTasks.PBGTask;
 import dcode.games.uEngine2.GFX.ScreenContent;
 import dcode.games.uEngine2.GFX.layers.FillTextureLayer;
 import dcode.games.uEngine2.StData;
@@ -13,18 +11,12 @@ import dcode.games.uEngine2.games.LD33.other.ItemQueueA;
 import dcode.games.uEngine2.games.LD33.other.playSprite;
 import dcode.games.uEngine2.games.LD33.other.playerShadow;
 import dcode.games.uEngine2.games.LD33.terrainOB.TerrainObject;
-import dcode.games.uEngine2.games.LD33.terrainOB.events.CollisionEvent;
-import dcode.games.uEngine2.games.LD33.terrainOB.events.speedDownEvent;
-import dcode.games.uEngine2.games.LD33.terrainOB.events.speedUpEvent;
-import dcode.games.uEngine2.tools.Shortcuts;
-import dcode.games.uEngine2.tools.numbarTools;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
-import static dcode.games.uEngine2.tools.Shortcuts.*;
+import static dcode.games.uEngine2.tools.Shortcuts.log;
+import static dcode.games.uEngine2.tools.Shortcuts.requestTexture;
 
 /**
  * Created by dusakus on 22.08.15.
@@ -46,6 +38,8 @@ public class MWMENU implements IMW {
 		switch (status) {
 			case 10:
 				clearGame();
+				LStData.msx_sanic.stop();
+				LStData.msx_menu.play(true, 0.6);
 				requestTexture("header3.png", "top1");
 				status = 20;
 				break;
@@ -107,18 +101,36 @@ public class MWMENU implements IMW {
 				break;
 			case 102:
 				LStData.playerONSCREENshift += 5;
-				if (LStData.playerONSCREENshift > 340)
+				if (LStData.playerONSCREENshift > 340) {
 					switch (LStData.playerLane) {
 						case 1:
 							status = 201;
+							LStData.msx_menu.stop();
+							break;
+						case 2:
+							status = 401;
+							break;
+						case 3:
+							clearGame();
+							status = 0;
+							LStData.currentMode = LStData.MODE_INGAME_2;
+							LStData.msx_menu.stop();
+							break;
+						case 4:
+							clearGame();
+							status = 0;
+							LStData.currentMode = LStData.MODE_INGAME_3;
+							LStData.msx_menu.stop();
 							break;
 						case 5:
+							LStData.msx_menu.stop();
 							LStData.currentMode = LStData.MODE_EXIT;
 							break;
 						default:
 							LStData.playerONSCREENshift = -20;
 							status = 100;
 					}
+				}
 				break;
 			case 201:
 				a = new AnimationPlayer1("start1");
@@ -132,8 +144,21 @@ public class MWMENU implements IMW {
 				clearGame();
 				status = 0;
 				LStData.currentMode = LStData.MODE_INGAME_1;
+				break;
+			case 401:
+				nextEnvironement();
+				LStData.playerONSCREENshift = -20;
+				status = 10;
 		}
 		return status;
+	}
+
+	private void nextEnvironement() {
+		if(LStData.enviroKey.equalsIgnoreCase("standard")){
+			LStData.enviroKey = "forest";
+		} else {
+			LStData.enviroKey = "standard";
+		}
 	}
 
 	private void clearGame() {
@@ -151,184 +176,4 @@ public class MWMENU implements IMW {
 		StData.currentGC.currentSC.layers_Overlay = sc.layers_Overlay;
 	}
 
-	private void checkCollision() {
-		for (TerrainObject to : LStData.terrainObjects) {
-			if (to.Ylocation == LStData.playerLane + -1 && to.Xlocation + to.collisionoffset <= LStData.playerPosition && to.Xlocation + to.collisionoffset + to.collisionLenght + numbarTools.clamp((int) (LStData.playerSpeed - 8), 1, 150) >= LStData.playerPosition) {
-				to.onCollision.onCollision(true, to);
-			}
-			if (to.Ylocation == LStData.enemyLane - 1 && to.Xlocation + to.collisionoffset <= LStData.enemyPosition && to.Xlocation + to.collisionoffset + to.collisionLenght + numbarTools.clamp((int) (LStData.playerSpeed - 8), 1, 150) >= LStData.enemyPosition) {
-				to.onCollision.onCollision(false, to);
-			}
-		}
-	}
-
-	private void clearObstacles() {
-		try {
-			TerrainObject te = LStData.terrainObjects.get(0);
-			while (te != null && te.Xlocation < LStData.getLocation() - 129) {
-				TerrainObject t2 = LStData.terrainObjects.get(LStData.terrainObjects.indexOf(te) + 1);
-				LStData.terrainObjects.remove(te);
-				te = t2;
-			}
-		} catch (Exception e) {
-
-		}
-	}
-
-	private void queueObstacle() {
-
-		TerrainObject a = new TerrainObject();
-		a.Xlocation = LStData.getLocation() + 400;
-		a.Ylocation = StData.gRand.nextInt(5);
-		a.WorldTexture = "ob01";
-		a.WarnTexture = "arrL";
-		a.XOffset = -6;
-		a.YOffset = -8;
-		a.collisionLenght = 8;
-		a.collisionoffset = -4;
-		a.onCollision = new CollisionEvent() {
-			@Override
-			public void onCollision(boolean player, TerrainObject to) {
-				if (player) {
-					LStData.playerSpeed = LStData.playerSpeed / 2;
-					double d = LStData.playerSpeed;
-					registerOneTimeBGTask(new ModifyPlayerSpeed(d / 2, 10), false);
-					registerOneTimeBGTask(new ModifyPlayerSpeed(d / 4, 20), false);
-					registerOneTimeBGTask(new ModifyPlayerSpeed(d / 4, 40), false);
-				} else {
-					LStData.enemySpeed = LStData.enemySpeed / 2;
-					double d = LStData.enemySpeed;
-					registerOneTimeBGTask(new ModifyEnemySpeed(d / 2, 10), false);
-					registerOneTimeBGTask(new ModifyEnemySpeed(d / 4, 20), false);
-					registerOneTimeBGTask(new ModifyEnemySpeed(d / 4, 40), false);
-				}
-				to.collisionLenght = 0;
-				to.collisionoffset = -1111;
-			}
-		};
-
-		LStData.terrainObjects.add(a);
-	}
-
-	private void queueBonus2() {
-		log("creating an bonus");
-
-		TerrainObject a = new TerrainObject();
-		a.Xlocation = LStData.getLocation() + 400;
-		a.Ylocation = StData.gRand.nextInt(5);
-		a.WorldTexture = "bonic2";
-		a.WarnTexture = "arrL";
-		a.XOffset = -6;
-		a.YOffset = -8;
-		a.collisionLenght = 8;
-		a.collisionoffset = -4;
-		a.onCollision = new speedDownEvent();
-
-		log("created at: x" + a.Xlocation + " on lane " + (a.Ylocation + 1));
-
-		LStData.terrainObjects.add(a);
-	}
-
-	private void queueBonus() {
-		log("creating an bonus");
-
-		TerrainObject a = new TerrainObject();
-		a.Xlocation = LStData.getLocation() + 400;
-		a.Ylocation = StData.gRand.nextInt(5);
-		a.WorldTexture = "bonic1";
-		a.WarnTexture = "arrL";
-		a.XOffset = -6;
-		a.YOffset = -8;
-		a.collisionLenght = 8;
-		a.collisionoffset = -4;
-		a.onCollision = new speedUpEvent();
-
-		log("created at: x" + a.Xlocation + " on lane " + (a.Ylocation + 1));
-
-		LStData.terrainObjects.add(a);
-	}
-
-	Delay batdel = new Delay(10);
-
-	private void percUpdate() {
-		int diff = numbarTools.mod((int) (LStData.enemyPosition - LStData.playerPosition));
-		int percp = (int) (((DEATHLIMIT - diff) * 1.0f / DEATHLIMIT) * 100);
-		if (percp >= 0 && percp <= 100 && percp != lastperc) {
-			if (true) {
-				BufferedImage fnt = Shortcuts.getTextureAsBufferedImage("fontP");
-				BufferedImage bf = new BufferedImage(66, 31, BufferedImage.TYPE_INT_ARGB);
-				Graphics g = bf.getGraphics();
-				if (percp > 99) {
-					g.drawImage(fnt.getSubimage(22, 0, 22, 31), 0, 0, null);
-					g.drawImage(fnt.getSubimage(0, 0, 22, 31), 22, 0, null);
-					g.drawImage(fnt.getSubimage(0, 0, 22, 31), 44, 0, null);
-				} else {
-					if (percp > 9) g.drawImage(fnt.getSubimage((percp / 10) * 22, 0, 22, 31), 22, 0, null);
-					g.drawImage(fnt.getSubimage((percp - ((percp / 10) * 10)) * 22, 0, 22, 31), 44, 0, null);
-				}
-				g.dispose();
-				Shortcuts.registerTexture(bf, "perc");
-				lastperc = percp;
-			}
-		}
-		if (percp >= 50) {
-			if (batdel.doNow()) {
-				LStData.battleIndex -= (percp - 50) / 10 + 1;
-				batdel.newDelay(30);
-			}
-		}
-		if (percp <= 0) {
-			if (batdel.doNow()) {
-				LStData.battleIndex++;
-				batdel.newDelay(30);
-			}
-		}
-
-	}
-
-	class ModifyPlayerSpeed extends PBGTask {
-		private double v;
-		private int timer;
-
-		public ModifyPlayerSpeed(double v, int i) {
-			super();
-			this.v = v;
-			timer = i;
-		}
-
-		@Override
-		public boolean isReady() {
-			timer--;
-			return timer == 0;
-		}
-
-		@Override
-		public void perform() throws Exception {
-			LStData.playerSpeed += v;
-			this.done = true;
-		}
-	}
-
-	class ModifyEnemySpeed extends PBGTask {
-		private double v;
-		private int timer;
-
-		public ModifyEnemySpeed(double v, int i) {
-			super();
-			this.v = v;
-			timer = i;
-		}
-
-		@Override
-		public boolean isReady() {
-			timer--;
-			return timer == 0;
-		}
-
-		@Override
-		public void perform() throws Exception {
-			LStData.enemySpeed += v;
-			this.done = true;
-		}
-	}
 }
